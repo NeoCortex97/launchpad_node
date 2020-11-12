@@ -1,0 +1,22 @@
+{
+  "name": "launchpad_node",
+  "version": "0.1.0",
+  "description": "Control obs-studio with launchpad",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ."
+  },
+  "keywords": [
+    "launchpad",
+    "midi",
+    "obs-studio"
+  ],
+  "author": "NeoCortex <sschmelz64@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "easymidi": "^2.0.1",
+    "obs-websocket-js": "^4.0.2"
+  }
+}
