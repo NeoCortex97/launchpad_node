@@ -1,7 +1,7 @@
 {
   "ws-connection": {
     "address": "localhost:4444",
-    "password": "***REMOVED***"
+    "password": "Passwort"
   },
   "mappings-file": "default.json",
   "default-mode": "session",
