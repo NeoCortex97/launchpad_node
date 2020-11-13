@@ -15,7 +15,8 @@ You need to install node js, but I won't explain how you install this becasue th
 [Here is the official node js documentation](https://nodejs.org/en/download/)
 Getting some launchpad midi documentation should come in handy too.  
 [Here is a document that explains the Launchpad mk2](https://d2xhy469pqj8rc.cloudfront.net/sites/default/files/novation/downloads/10529/launchpad-mk2-programmers-reference-guide-v1-02.pdf)  
-[This document explains the Launchpad mk1](https://d2xhy469pqj8rc.cloudfront.net/sites/default/files/novation/downloads/4080/launchpad-programmers-reference.pdf)
+[This document explains the Launchpad mk1](https://d2xhy469pqj8rc.cloudfront.net/sites/default/files/novation/downloads/4080/launchpad-programmers-reference.pdf)  
+[Here is the obs-websocket documentation](https://github.com/Palakis/obs-websocket/blob/4.x-current/docs/generated/protocol.md)
 
 ## Configuration
 
@@ -44,14 +45,22 @@ A key looks like this:
         "color": 2,
         "blink": false,
         "pulse": false,
-        "alt_color": 0
+        "alt_color": 0,
+        "action": {
+          "type": "",
+          "params":{}
+        }
       },
       "active":{
         "type": "noteon",
         "color": 2,
         "blink": false,
         "pulse": true,
-        "alt_color": 5
+        "alt_color": 5,
+        "action": {
+          "type": "",
+          "params":{}
+        }
       }
     },
 ```
@@ -63,5 +72,6 @@ The `color` is a value beween 0 and 127 that specifies the color.
 The `type` key should be `noteon` if the key is not in the top row. If your key is in the top Row this value should be `cc`
 The `blink` key tells the script to flash the key between `color` and `alt_color`.
 The `pulse` key tells the script to pulse in the `alt_color`.
-
-__Note:__ At the moment i did not yet implement the OSB-Websocket things.
+The `action` specifies what should happen if the key is pressed or released.  
+  The `type` key inside `action` is to specify the request send to obs.
+  The `params` key inside `action` is to specify the parameters send with te request.

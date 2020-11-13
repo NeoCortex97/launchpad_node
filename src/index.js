@@ -107,7 +107,7 @@ function handleMessage (type, msg) {
         parseState(mappings["keys"][msg.note]["active"], msg.note).forEach((item) => {
           if (mappings["keys"][msg.note]["active"]["action"]) {
             obs.send(mappings["keys"][msg.note]["active"]["action"]["type"],
-            mappings["keys"][msg.note]["active"]["action"]["params"]);
+                     mappings["keys"][msg.note]["active"]["action"]["params"]);
           }
           output.send("noteon", item);
         });

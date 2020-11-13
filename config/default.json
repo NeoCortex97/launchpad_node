@@ -7,7 +7,7 @@
         "color": 2,
         "blink": false,
         "pulse": false,
-        "alt_color": 0
+        "alt_color": 0,
       },
       "active":{
         "type": "noteon",
