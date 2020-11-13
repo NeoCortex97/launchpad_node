@@ -1,0 +1,38 @@
+{
+  "keys":{
+    "11":{
+      "toggle": true,
+      "inactive": {
+        "type": "noteon",
+        "color": 2,
+        "blink": false,
+        "pulse": false,
+        "alt_color": 0
+      },
+      "active":{
+        "type": "noteon",
+        "color": 2,
+        "blink": false,
+        "pulse": true,
+        "alt_color": 5
+      }
+    },
+    "12":{
+      "toggle": false,
+      "inactive": {
+        "type": "noteon",
+        "color": 2,
+        "blink": false,
+        "pulse": false,
+        "alt_color": 0
+      },
+      "active":{
+        "type": "noteon",
+        "color": 2,
+        "blink": false,
+        "pulse": true,
+        "alt_color": 5
+      }
+    }
+  }
+}

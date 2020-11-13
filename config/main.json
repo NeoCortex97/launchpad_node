@@ -1,0 +1,16 @@
+{
+  "ws-connection": {
+    "address": "localhost:4444",
+    "password": "password"
+  },
+  "mappings-file": "default.json",
+  "default-mode": "session",
+  "blink-bpm": 100,
+  "modes": {
+    "session": [240, 0, 32, 41, 2, 24, 34, 0, 247],
+    "user1": [240, 0, 32, 41, 2, 24, 34, 1, 247],
+    "user2": [240, 0, 32, 41, 2, 24, 34, 2, 247],
+    "volume": [240, 0, 32, 41, 2, 24, 34, 4, 247],
+    "pan": [240, 0, 32, 41, 2, 24, 34, 5, 247]
+  }
+}
