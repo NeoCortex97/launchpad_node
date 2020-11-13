@@ -12,6 +12,36 @@ let activeKeys = [];
 // global vaiables
 let stopping = true;
 
+// connect to websocket
+const obs = new OBSWebSocket();
+obs.connect(config["ws-connection"]).then(() => {
+  console.log("Sucessfully conntected to OBS");
+}).then(() => {
+  console.log(`Success! We're connected & authenticated.`);
+
+  return obs.send('GetSceneList');
+})
+.then(data => {
+  console.log(`${data.scenes.length} Available Scenes!`);
+
+  data.scenes.forEach(scene => {
+      if (scene.name !== data.currentScene) {
+          console.log(`Found a different scene! Switching to Scene: ${scene.name}`);
+
+          obs.send('SetCurrentScene', {
+              'scene-name': scene.name
+          });
+      }
+  });
+}).catch(err => { // Promise convention dicates you have a catch on every chain.
+  console.log(err);
+});
+
+// Attach obs listener
+obs.on('error', err => {
+  console.error('socket error:', err);
+});
+
 // enumerate midi devices
 const devices = easymidi.getInputs()
 const deviceName = devices.find(a => a.includes("Launchpad"));
@@ -19,7 +49,7 @@ if(!deviceName){
   console.log("Did not find device that identidies as a Launchpad");
   handleQuit();
 }
-console.log("Found the following device: " + deviceName);
+console.log('Found the following device: "' + deviceName + '"');
 
 // Open midi device and send setup commands
 const input = new easymidi.Input(deviceName);
@@ -62,6 +92,10 @@ function handleMessage (type, msg) {
       if (mappings["keys"][msg.note]["toggle"] && !activeKeys.includes(msg.note)) {
         parseState(mappings["keys"][msg.note]["active"], msg.note).forEach((item) => {
           output.send("noteon", item);
+          if (mappings["keys"][msg.note]["active"]["action"]) {
+            obs.send(mappings["keys"][msg.note]["active"]["action"]["type"],
+            mappings["keys"][msg.note]["active"]["action"]["params"]);
+          }
         });
         activeKeys.push(msg.note);
       }else if (mappings["keys"][msg.note]["toggle"] && activeKeys.includes(msg.note)){
@@ -71,6 +105,10 @@ function handleMessage (type, msg) {
         activeKeys.splice(activeKeys.indexOf(msg.note));
       }else{
         parseState(mappings["keys"][msg.note]["active"], msg.note).forEach((item) => {
+          if (mappings["keys"][msg.note]["active"]["action"]) {
+            obs.send(mappings["keys"][msg.note]["active"]["action"]["type"],
+            mappings["keys"][msg.note]["active"]["action"]["params"]);
+          }
           output.send("noteon", item);
         });
       }

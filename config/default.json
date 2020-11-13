@@ -31,7 +31,13 @@
         "color": 2,
         "blink": false,
         "pulse": true,
-        "alt_color": 5
+        "alt_color": 5,
+        "action": {
+          "type": "SetCurrentScene",
+          "params": {
+            "scene-name": "Pycharm"
+          }
+        }
       }
     }
   }
