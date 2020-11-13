@@ -11,7 +11,7 @@ I used a Launchpad mk2 to test, but it should work with the other versions as we
 
 ## Software
 
-You need to install node js, but I won't explain how you install this becasue this depends on your operating system.
+You need to install node js, but I won't explain how you install this becasue this depends on your operating system.  
 [Here is the official node js documentation](https://nodejs.org/en/download/)
 Getting some launchpad midi documentation should come in handy too.  
 [Here is a document that explains the Launchpad mk2](https://d2xhy469pqj8rc.cloudfront.net/sites/default/files/novation/downloads/10529/launchpad-mk2-programmers-reference-guide-v1-02.pdf)  
@@ -73,5 +73,5 @@ The `type` key should be `noteon` if the key is not in the top row. If your key 
 The `blink` key tells the script to flash the key between `color` and `alt_color`.
 The `pulse` key tells the script to pulse in the `alt_color`.
 The `action` specifies what should happen if the key is pressed or released.  
-  The `type` key inside `action` is to specify the request send to obs.
+  The `type` key inside `action` is to specify the request send to obs.  
   The `params` key inside `action` is to specify the parameters send with te request.
