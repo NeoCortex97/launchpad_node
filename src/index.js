@@ -8,39 +8,11 @@ const path = require("path");
 const config = require(path.join(__dirname, "..", "config", "main.json"));
 const mappings = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "config", config["mappings-file"])));
 let activeKeys = [];
+let activeScene = {};
+let blockedKey = 0;
 
 // global vaiables
 let stopping = true;
-
-// connect to websocket
-const obs = new OBSWebSocket();
-obs.connect(config["ws-connection"]).then(() => {
-  console.log("Sucessfully conntected to OBS");
-}).then(() => {
-  console.log(`Success! We're connected & authenticated.`);
-
-  return obs.send('GetSceneList');
-})
-.then(data => {
-  console.log(`${data.scenes.length} Available Scenes!`);
-
-  data.scenes.forEach(scene => {
-      if (scene.name !== data.currentScene) {
-          console.log(`Found a different scene! Switching to Scene: ${scene.name}`);
-
-          obs.send('SetCurrentScene', {
-              'scene-name': scene.name
-          });
-      }
-  });
-}).catch(err => { // Promise convention dicates you have a catch on every chain.
-  console.log(err);
-});
-
-// Attach obs listener
-obs.on('error', err => {
-  console.error('socket error:', err);
-});
 
 // enumerate midi devices
 const devices = easymidi.getInputs()
@@ -62,6 +34,54 @@ Object.keys(mappings["keys"]).forEach((key) =>{
       output.send("noteon", item);
     });
   }
+});
+
+// connect to websocket
+const obs = new OBSWebSocket();
+obs.connect(config["ws-connection"]).then(() => {
+  console.log("Sucessfully conntected to OBS");
+}).then(() => {
+  return obs.send('GetSceneList');
+}).then(data => {
+  console.log(`${data.scenes.length} Available Scenes!`);
+
+  console.log("Listing scenes");
+  console.group();
+  data.scenes.forEach(scene => {
+    console.log(scene.name);
+  });
+  console.groupEnd();
+  return obs.send("GetCurrentScene")
+}).then(data => {
+  activeScene = data.name;
+  output.send("noteon",{note: mappings.scenes[data.name].note, 
+                        channel: mappings.scenes[data.name].channel,
+                        velocity: mappings.scenes[data.name]["active-color"]});
+  blockedKey = mappings.scenes[data.name].note;
+  console.log("The currently active scene is: " + activeScene);
+}).catch(err => { // Promise convention dicates you have a catch on every chain.
+  console.log(err);
+});
+
+// Attach obs listener
+obs.on('error', err => {
+  console.error('socket error:', err);
+});
+obs.on("SwitchScenes", (data) => {
+  if (mappings.scenes[activeScene]) {
+    output.send("noteon",{note: mappings.scenes[activeScene].note, 
+                         channel: mappings.scenes[activeScene].channel,
+                         velocity: mappings.scenes[activeScene]["inactive-color"]});
+    console.log(`Switched from scene: ${activeScene}`);
+  }
+  if (mappings.scenes[data["scene-name"]]) {
+    output.send("noteon",{note: mappings.scenes[data["scene-name"]].note, 
+                         channel: mappings.scenes[data["scene-name"]].channel,
+                         velocity: mappings.scenes[data["scene-name"]]["active-color"]});
+    console.log(`to scene: ${data["scene-name"]}`);                    
+    blockedKey = mappings.scenes[data["scene-name"]].note;
+  }
+  activeScene = data["scene-name"];
 });
 
 // Attach event handler
@@ -112,7 +132,7 @@ function handleMessage (type, msg) {
           output.send("noteon", item);
         });
       }
-    }else if (!mappings["keys"][msg.note]["toggle"]){
+    }else if (!mappings["keys"][msg.note]["toggle"] && !msg.note == blockedKey){
       parseState(mappings["keys"][msg.note]["inactive"], msg.note).forEach((item) => {
         output.send("noteon", item);
       });

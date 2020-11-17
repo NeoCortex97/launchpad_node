@@ -1,23 +1,29 @@
 {
   "keys":{
-    "11":{
-      "toggle": true,
+    "81":{
+      "toggle": false,
       "inactive": {
         "type": "noteon",
-        "color": 2,
+        "color": 15,
         "blink": false,
         "pulse": false,
         "alt_color": 0
       },
       "active":{
         "type": "noteon",
-        "color": 2,
+        "color": 19,
         "blink": false,
-        "pulse": true,
-        "alt_color": 5
+        "pulse": false,
+        "alt_color": 5,
+        "action": {
+          "type": "SetCurrentScene",
+          "params": {
+            "scene-name": "Chatting"
+          }
+        }
       }
     },
-    "12":{
+    "82":{
       "toggle": false,
       "inactive": {
         "type": "noteon",
@@ -28,9 +34,9 @@
       },
       "active":{
         "type": "noteon",
-        "color": 2,
+        "color": 19,
         "blink": false,
-        "pulse": true,
+        "pulse": false,
         "alt_color": 5,
         "action": {
           "type": "SetCurrentScene",
@@ -39,6 +45,78 @@
           }
         }
       }
+    },
+    "83":{
+      "toggle": false,
+      "inactive": {
+        "type": "noteon",
+        "color": 2,
+        "blink": false,
+        "pulse": false,
+        "alt_color": 0
+      },
+      "active":{
+        "type": "noteon",
+        "color": 19,
+        "blink": false,
+        "pulse": false,
+        "alt_color": 5,
+        "action": {
+          "type": "SetCurrentScene",
+          "params": {
+            "scene-name": "VisualStudio"
+          }
+        }
+      }
+    },
+    "84":{
+      "toggle": false,
+      "inactive": {
+        "type": "noteon",
+        "color": 2,
+        "blink": false,
+        "pulse": false,
+        "alt_color": 0
+      },
+      "active":{
+        "type": "noteon",
+        "color": 19,
+        "blink": false,
+        "pulse": false,
+        "alt_color": 5,
+        "action": {
+          "type": "SetCurrentScene",
+          "params": {
+            "scene-name": "Browser"
+          }
+        }
+      }
+    }
+  },
+  "scenes":{
+    "Chatting":{
+      "note": 81,
+      "channel": 0,
+      "active-color": 16,
+      "inactive-color": 15
+    },
+    "Pycharm":{
+      "note": 82,
+      "channel": 0,
+      "active-color": 16,
+      "inactive-color": 2
+    },
+    "VisualStudio":{
+      "note": 83,
+      "channel": 0,
+      "active-color": 16,
+      "inactive-color": 2
+    },
+    "Browser":{
+      "note": 84,
+      "channel": 0,
+      "active-color": 16,
+      "inactive-color": 2
     }
   }
 }
