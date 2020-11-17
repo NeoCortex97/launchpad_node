@@ -14,6 +14,36 @@ let blockedKey = 0;
 // global vaiables
 let stopping = true;
 
+// connect to websocket
+const obs = new OBSWebSocket();
+obs.connect(config["ws-connection"]).then(() => {
+  console.log("Sucessfully conntected to OBS");
+}).then(() => {
+  console.log(`Success! We're connected & authenticated.`);
+
+  return obs.send('GetSceneList');
+})
+.then(data => {
+  console.log(`${data.scenes.length} Available Scenes!`);
+
+  data.scenes.forEach(scene => {
+      if (scene.name !== data.currentScene) {
+          console.log(`Found a different scene! Switching to Scene: ${scene.name}`);
+
+          obs.send('SetCurrentScene', {
+              'scene-name': scene.name
+          });
+      }
+  });
+}).catch(err => { // Promise convention dicates you have a catch on every chain.
+  console.log(err);
+});
+
+// Attach obs listener
+obs.on('error', err => {
+  console.error('socket error:', err);
+});
+
 // enumerate midi devices
 const devices = easymidi.getInputs()
 const deviceName = devices.find(a => a.includes("Launchpad"));
